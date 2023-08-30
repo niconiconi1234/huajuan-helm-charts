@@ -1,0 +1,7 @@
+application:
+  sysInfoWeb:
+    replicas: 3
+  envViewServer:
+    replicas: 2
+    DB_PASSWORD: dGVzdAo= # <-- This is the base64 encoded value of "test"
+  

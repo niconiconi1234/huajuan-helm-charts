@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sys-info-web-deployment
+spec:
+  replicas: {{ .Values.application.sysInfoWeb.replicas }}
+  selector:
+    matchLabels:
+      app: sys-info-web
+  template:
+    metadata:
+      labels:
+        app:  sys-info-web
+    spec:
+      containers:
+      - name: sys-info-web
+        image: huajuan6848/sys-info-web:0.0.2-SNAPSHOT-HEALTH
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3

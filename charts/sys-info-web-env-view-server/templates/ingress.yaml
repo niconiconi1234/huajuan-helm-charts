@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sys-info-web-env-view-server-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /sys-info-web(/|$)(.*) # <-- This is the regex
+        backend:
+          service:
+            name: sys-info-web-service
+            port: 
+              number: 80
+      - pathType: Prefix
+        path: /env-view-server(/|$)(.*) # <-- This is the regex
+        backend:
+          service:
+            name: env-view-server-service
+            port: 
+              number: 80

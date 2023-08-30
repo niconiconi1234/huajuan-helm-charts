@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: env-view-server-deployment
+  labels:
+    app: env-view-server
+spec:
+  replicas: {{ .Values.application.envViewServer.replicas }}
+  selector:
+    matchLabels:
+      app: env-view-server
+  template:
+    metadata:
+      labels:
+        app: env-view-server
+    spec:
+      containers:
+        - name: env-view-server
+          image: huajuan6848/env-view-server:0.0.1-SNAPSHOT
+          ports:
+            - containerPort: 8080
+          resources:
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: env-view-server-secret
+                  key: DB_PASSWORD
